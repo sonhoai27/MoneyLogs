@@ -11,6 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+        <TextView
+            android:padding="8dp"
+            android:textAlignment="center"
+            android:textSize="18dp"
+            android:textColor="@android:color/white"
+            android:id="@+id/txtNothings"
+            android:text="Không có mục nào."
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
         <ListView
             android:divider="#fff"
             android:dividerHeight="0dp"

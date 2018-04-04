@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="16dp"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="8dp"
+        android:textSize="18dp"
+        android:text="Chọn hình thức"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <RadioGroup
+        android:orientation="vertical"
+        android:id="@+id/radioFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RadioButton
+            android:checked="true"
+            android:tag="1"
+            android:layout_weight="2"
+            android:text="Thống kê theo tuần"
+            android:id="@+id/radioWeek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <RadioButton
+            android:tag="2"
+            android:layout_weight="2"
+            android:text="Thống kê theo quý"
+            android:id="@+id/radioQuart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <RadioButton
+            android:tag="3"
+            android:layout_weight="2"
+            android:text="Thống kê theo tháng"
+            android:id="@+id/radioMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <RadioButton
+            android:tag="4"
+            android:layout_weight="1"
+            android:text="Thống kê theo năm"
+            android:id="@+id/radioYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RadioGroup>
+    <LinearLayout
+        android:layout_marginTop="32dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btnSave"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:layout_width="20dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="32dp"
+            android:layout_weight="1"
+            android:background="@color/colorPrimaryDark"
+            android:text="Lưu"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@android:color/background_light" />
+
+        <Button
+            android:id="@+id/btnClose"
+            android:layout_width="20dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="32dp"
+            android:layout_weight="1"
+            android:background="@color/colorRed"
+            android:text="Thoát"
+            android:textAllCaps="false"
+            android:textColor="@android:color/background_light" />
+    </LinearLayout>
+</LinearLayout>

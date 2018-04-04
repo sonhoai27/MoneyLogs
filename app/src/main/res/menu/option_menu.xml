@@ -4,14 +4,8 @@
 
     <item
         android:id="@+id/itemWeek"
-        android:title="Week Log" />
+        android:title="InCome" />
     <item
         android:id="@+id/itemQuarter"
-        android:title="Quarter Log" />
-    <item
-        android:id="@+id/itemMonth"
-        android:title="Month Log" />
-    <item
-        android:id="@+id/itemYear"
-        android:title="Year Log" />
+        android:title="OutCome" />
 </menu>

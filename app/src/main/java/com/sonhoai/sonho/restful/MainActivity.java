@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sonhoai.sonho.restful.Adapter.Adapter;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private List<MoneyLog> moneyLogList;
     private Adapter adapter;
     private FloatingActionButton fbAddMoneyLog;
+    private TextView txtNothings;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,15 +63,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.itemWeek: return  true;
-            case R.id.itemQuarter: return  true;
-            case R.id.itemMonth: return  true;
-            case R.id.itemYear: return  true;
+            case R.id.itemWeek: inCome(); return  true;
+            case R.id.itemQuarter: outCome(); return  true;
             default: return false;
         }
     }
 
     private void init(){
+        txtNothings = findViewById(R.id.txtNothings);
         fbAddMoneyLog = findViewById(R.id.fbAddMoneyLog);
         lvMoneyLogs = findViewById(R.id.lvMoneyLogs);
         moneyLogList = new ArrayList<>();
@@ -163,11 +164,15 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Integer integer) {
-            Toast.makeText(getApplicationContext(), "Kết nối thành công", Toast.LENGTH_SHORT).show();
             super.onPostExecute(integer);
             Log.i("CODEGET", String.valueOf(integer));
             if(integer == 200){
                 adapter.notifyDataSetChanged();
+                if(moneyLogList.size() != 0){
+                    txtNothings.setVisibility(View.GONE);
+                }else {
+                    txtNothings.setVisibility(View.VISIBLE);
+                }
             }else if(integer == 400){
                 Toast.makeText(getApplicationContext(), "That bai", Toast.LENGTH_SHORT).show();
             }
@@ -262,6 +267,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "That bai", Toast.LENGTH_SHORT).show();
             }else if(integer == 200){
                 adapter.notifyDataSetChanged();
+                if(moneyLogList.size() != 0){
+                    txtNothings.setVisibility(View.GONE);
+                }else {
+                    txtNothings.setVisibility(View.VISIBLE);
+                }
                 Toast.makeText(getApplicationContext(), "Thanh cong",Toast.LENGTH_SHORT).show();
             }
         }
@@ -498,5 +508,44 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show();
             }
         }
+    }
+
+    private void inCome(){
+        showReportDialog();
+    }
+    private void outCome(){
+        //method,
+        showReportDialog();
+    }
+
+    private  void showReportDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        LayoutInflater inflater = getLayoutInflater();
+        final View view1 = inflater.inflate(R.layout.dialog_reports, null);
+        builder.setView(view1);
+        builder.setCancelable(false);
+
+        final RadioGroup group;
+        final RadioButton[] radioType = new RadioButton[1];
+        Button btnSave,btnClose;
+
+        btnSave = view1.findViewById(R.id.btnSave);
+        btnClose = view1.findViewById(R.id.btnClose);
+        group = view1.findViewById(R.id.radioType);
+        final AlertDialog dialog = builder.show();
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int checked = group.getCheckedRadioButtonId();
+                radioType[0] = view1.findViewById(checked);
+
+            }
+        });
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+            }
+        });
     }
 }
