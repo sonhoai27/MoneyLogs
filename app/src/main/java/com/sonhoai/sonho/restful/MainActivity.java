@@ -1,5 +1,6 @@
 package com.sonhoai.sonho.restful;
 
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -12,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-        //registerForContextMenu(lvMoneyLogs);
+        registerForContextMenu(lvMoneyLogs);
         new DoGets().execute("http://192.168.1.129:9000/api/MoneyLogs");
     }
 
@@ -88,13 +90,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 LayoutInflater inflater = getLayoutInflater();
-                View view1 = inflater.inflate(R.layout.dialog_add, null);
+                final View view1 = inflater.inflate(R.layout.dialog_add, null);
                 builder.setView(view1);
                 builder.setCancelable(false);
 
                 final EditText edtContent, edtAmount,edtNote;
-                RadioGroup group;
-                final RadioButton radioType;
+                final RadioGroup group;
+                final RadioButton[] radioType = new RadioButton[1];
                 Button btnSave,btnClose;
 
                 btnSave = view1.findViewById(R.id.btnSave);
@@ -104,19 +106,17 @@ public class MainActivity extends AppCompatActivity {
                 edtNote = view1.findViewById(R.id.edtNote);
                 group = view1.findViewById(R.id.radioType);
                 final AlertDialog dialog = builder.show();
-
-                int checked = group.getCheckedRadioButtonId();
-                radioType = view1.findViewById(checked);
-                Log.i("CHECK", radioType.getText().toString());
                 btnSave.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        int checked = group.getCheckedRadioButtonId();
+                        radioType[0] = view1.findViewById(checked);
                         new DoPost().execute(
                                 "http://192.168.1.129:9000/api/MoneyLogs",
                                 edtContent.getText().toString(),
                                 edtAmount.getText().toString(),
                                 edtNote.getText().toString(),
-                                radioType.getTag().toString()
+                                radioType[0].getTag().toString()
                         );
                     }
                 });
@@ -163,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Integer integer) {
+            Toast.makeText(getApplicationContext(), "Kết nối thành công", Toast.LENGTH_SHORT).show();
             super.onPostExecute(integer);
             Log.i("CODEGET", String.valueOf(integer));
             if(integer == 200){
@@ -275,6 +276,227 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        return super.onContextItemSelected(item);
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int position = info.position;
+        if(item.getItemId() == R.id.cmDelete){
+            delete(moneyLogList.get(position).getId());
+            return true;
+        }else if(item.getItemId() == R.id.ctEdit){
+           edit(moneyLogList.get(position).getId(), position);
+           return true;
+        }
+        return false;
+    }
+
+    private void delete(final int currentId){
+        new doDelete().execute("http://192.168.1.129:9000/api/MoneyLogs/"+currentId);
+    }
+    private void edit(final int currentId,final int idRow){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        LayoutInflater inflater = getLayoutInflater();
+        final View view1 = inflater.inflate(R.layout.dialog_add, null);
+        builder.setView(view1);
+        builder.setCancelable(false);
+
+        final EditText edtContent, edtAmount,edtNote;
+        final RadioGroup group;
+        final RadioButton[] radioType = new RadioButton[1];
+        final RadioButton radioB1;
+        final RadioButton radioB2;
+        Button btnSave,btnClose;
+
+        radioB1 = view1.findViewById(R.id.radioThu);
+        radioB2 = view1.findViewById(R.id.radioChi);
+
+        btnSave = view1.findViewById(R.id.btnSave);
+        btnClose = view1.findViewById(R.id.btnClose);
+
+        edtContent = view1.findViewById(R.id.edtContent);
+        edtContent.setText(moneyLogList.get(idRow).getName()+"");
+
+        edtAmount = view1.findViewById(R.id.edtAmount);
+        edtAmount.setText(moneyLogList.get(idRow).getAmount()+"");
+        edtNote = view1.findViewById(R.id.edtNote);
+        edtNote.setText(moneyLogList.get(idRow).getNote());
+
+        group = view1.findViewById(R.id.radioType);
+        final AlertDialog dialog = builder.show();
+
+        if(moneyLogList.get(idRow).getType() == 0){
+            radioB1.setChecked(true);
+            radioB2.setChecked(false);
+        }else if(moneyLogList.get(idRow).getType() == 1){
+            radioB2.setChecked(true);
+            radioB1.setChecked(false);
+        }
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    int checked = group.getCheckedRadioButtonId();
+                    radioType[0] = view1.findViewById(checked);
+                    jsonObject.put("Id", moneyLogList.get(idRow).getId()+"");
+                    jsonObject.put("Name", edtContent.getText().toString());
+                    jsonObject.put("Amount", edtAmount.getText().toString());
+                    jsonObject.put("Note", edtNote.getText().toString());
+                    jsonObject.put("Type", radioType[0].getTag().toString());
+                    jsonObject.put("Date", moneyLogList.get(idRow).getDate().toString());
+                    String obj = jsonObject.toString();
+                    new doUpdate().execute("http://192.168.1.129:9000/api/MoneyLogs/"+currentId, obj);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+            }
+        });
+    }
+
+    private class doDelete extends AsyncTask<String,Void,Integer>{
+        @Override
+        protected Integer doInBackground(String... strings) {
+            String urlString = strings[0];
+            URL url = null;
+            HttpURLConnection httpURLConnection = null;
+            InputStream inputStream = null;
+            int c;
+            String result = "";
+            try {
+                url = new URL(urlString);
+                httpURLConnection = (HttpURLConnection) url.openConnection();//truyen vao method
+                httpURLConnection.setRequestMethod("DELETE");
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.connect();
+                inputStream = httpURLConnection.getInputStream();
+
+                //khác -1 là vẫn còn
+                while ((c=inputStream.read()) != -1){
+                    result+=(char)c;
+                }
+            } catch (Exception e) {
+                //that bai
+                e.printStackTrace();
+                return 400;
+            }
+            String kq = result.substring(1,4).toString();
+            if(!kq.equals("200")){
+                return 400;
+            }else {
+                return 200;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            final AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+            Log.i("CODES", String.valueOf(integer));
+            if(integer == 200){
+                dialog.setTitle("Thành công!");
+                dialog.setMessage("Bạn đã xóa thành công");
+                dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        moneyLogList.clear();
+                        new DoGets().execute("http://192.168.1.129:9000/api/MoneyLogs");
+                        dialogInterface.dismiss();
+                    }
+                });
+                dialog.show();
+            }else if(integer ==400){
+                dialog.setTitle("Thất bại!");
+                dialog.setMessage("Xóa thất bại, vui lòng xem lại.");
+                dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                dialog.show();
+            }
+        }
+    }
+
+    private class doUpdate extends AsyncTask<String,Void,Integer>{
+        @Override
+        protected Integer doInBackground(String... strings) {
+            String urlString = strings[0];
+            URL url = null;
+            HttpURLConnection httpURLConnection = null;
+            InputStream inputStream = null;
+            OutputStream outStream;
+            int c;
+            String result = "";
+            try {
+                url = new URL(urlString);
+                httpURLConnection = (HttpURLConnection) url.openConnection();//truyen vao method
+
+                httpURLConnection.setRequestMethod("PUT");
+
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setDoOutput(true);
+
+                httpURLConnection.setRequestProperty("Content-Type","application/json");
+                httpURLConnection.setRequestProperty("Accept","application/json");
+
+                outStream = new BufferedOutputStream(httpURLConnection.getOutputStream());
+                Log.i("OBJECT", strings[1]);
+                outStream.write(strings[1].getBytes(Charset.forName("UTF-8")));
+                outStream.flush();
+                outStream.close();
+
+                inputStream = httpURLConnection.getInputStream();
+
+                //khác -1 là vẫn còn
+                while ((c=inputStream.read()) != -1){
+                    result+=(char)c;
+                }
+            } catch (Exception e) {
+                //that bai
+                e.printStackTrace();
+                return 400;
+            }
+            String kq = result.substring(1,4).toString();
+            if(!kq.equals("200")){
+                return 400;
+            }else {
+                return 200;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            final AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+            Log.i("CODES", String.valueOf(integer));
+            if(integer == 200){
+                dialog.setTitle("Thành công!");
+                dialog.setMessage("Bạn đã sửa thành công");
+                dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        moneyLogList.clear();
+                        new DoGets().execute("http://192.168.1.129:9000/api/MoneyLogs");
+                        dialogInterface.dismiss();
+                    }
+                });
+                dialog.show();
+            }else if(integer ==400){
+                dialog.setTitle("Thất bại!");
+                dialog.setMessage("Xóa thất bại, vui lòng xem lại.");
+                dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                dialog.show();
+            }
+        }
     }
 }

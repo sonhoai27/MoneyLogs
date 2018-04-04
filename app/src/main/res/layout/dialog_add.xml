@@ -79,7 +79,7 @@
             android:layout_marginRight="32dp"
             android:layout_weight="1"
             android:background="@color/colorPrimaryDark"
-            android:text="Thêm"
+            android:text="Lưu"
             android:textAlignment="center"
             android:textAllCaps="false"
             android:textColor="@android:color/background_light" />
@@ -92,7 +92,7 @@
             android:layout_marginLeft="32dp"
             android:layout_weight="1"
             android:background="@color/colorRed"
-            android:text="Hủy"
+            android:text="Thoát"
             android:textAllCaps="false"
             android:textColor="@android:color/background_light" />
     </LinearLayout>
