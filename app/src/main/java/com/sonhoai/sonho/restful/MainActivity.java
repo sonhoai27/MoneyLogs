@@ -1,6 +1,7 @@
 package com.sonhoai.sonho.restful;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -511,16 +512,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void inCome(){
-        showReportDialog();
+        showReportDialog(1);
     }
     private void outCome(){
         //method,
-        showReportDialog();
+        showReportDialog(2);
     }
 
-    private  void showReportDialog(){
+    private  void showReportDialog(final int filter){
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        LayoutInflater inflater = getLayoutInflater();
+        final LayoutInflater inflater = getLayoutInflater();
         final View view1 = inflater.inflate(R.layout.dialog_reports, null);
         builder.setView(view1);
         builder.setCancelable(false);
@@ -531,14 +532,18 @@ public class MainActivity extends AppCompatActivity {
 
         btnSave = view1.findViewById(R.id.btnSave);
         btnClose = view1.findViewById(R.id.btnClose);
-        group = view1.findViewById(R.id.radioType);
+        group = view1.findViewById(R.id.radioFilter);
+
         final AlertDialog dialog = builder.show();
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int checked = group.getCheckedRadioButtonId();
                 radioType[0] = view1.findViewById(checked);
-
+                Intent showReport = new Intent(MainActivity.this, ReportActivity.class);
+                showReport.putExtra("FILTER", String.valueOf(filter));
+                showReport.putExtra("SORT", radioType[0].getTag().toString());
+                startActivity(showReport);
             }
         });
         btnClose.setOnClickListener(new View.OnClickListener() {
