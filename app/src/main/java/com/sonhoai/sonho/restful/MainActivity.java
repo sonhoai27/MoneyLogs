@@ -512,11 +512,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void inCome(){
-        showReportDialog(1);
+        showReportDialog(0);
     }
     private void outCome(){
         //method,
-        showReportDialog(2);
+        showReportDialog(1);
     }
 
     private  void showReportDialog(final int filter){

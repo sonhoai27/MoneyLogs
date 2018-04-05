@@ -68,4 +68,16 @@ public class MoneyLog {
     public void setDate(String date) {
         this.date = date;
     }
+
+    @Override
+    public String toString() {
+        return "MoneyLog{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", amount=" + amount +
+                ", note='" + note + '\'' +
+                ", type=" + type +
+                ", date='" + date + '\'' +
+                '}';
+    }
 }

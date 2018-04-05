@@ -7,20 +7,20 @@ import java.util.List;
  */
 
 public class Weeks {
-    private List<Week> weekList;
+    private Obj obj;
     private List<MoneyLog> moneyLogList;
 
-    public Weeks(List<Week> weekList, List<MoneyLog> moneyLogList) {
-        this.weekList = weekList;
+    public Weeks(Obj obj, List<MoneyLog> moneyLogList) {
+        this.obj = obj;
         this.moneyLogList = moneyLogList;
     }
 
-    public List<Week> getWeekList() {
-        return weekList;
+    public Obj getObj() {
+        return obj;
     }
 
-    public void setWeekList(List<Week> weekList) {
-        this.weekList = weekList;
+    public void setObj(Obj obj) {
+        this.obj = obj;
     }
 
     public List<MoneyLog> getMoneyLogList() {
@@ -29,5 +29,13 @@ public class Weeks {
 
     public void setMoneyLogList(List<MoneyLog> moneyLogList) {
         this.moneyLogList = moneyLogList;
+    }
+
+    @Override
+    public String toString() {
+        return "Weeks{" +
+                "obj=" + obj +
+                ", moneyLogList=" + moneyLogList +
+                '}';
     }
 }

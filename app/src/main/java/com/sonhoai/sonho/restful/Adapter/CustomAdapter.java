@@ -1,16 +1,17 @@
 package com.sonhoai.sonho.restful.Adapter;
 
 import android.content.Context;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.sonhoai.sonho.restful.Models.MoneyLog;
-import com.sonhoai.sonho.restful.Models.Week;
+import com.sonhoai.sonho.restful.ExpandableHeightListView;
+import com.sonhoai.sonho.restful.Models.Weeks;
 import com.sonhoai.sonho.restful.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,19 +19,17 @@ import java.util.List;
  */
 
 public class CustomAdapter extends BaseAdapter{
-    private List<Week> weeks;
-    private List<MoneyLog> moneyLogList;
+    private List<Weeks> weeks;
     private Context context;
 
-    public CustomAdapter(List<MoneyLog> moneyLogList, Context context) {
-        this.moneyLogList = moneyLogList;
+    public CustomAdapter(List<Weeks> weeks, Context context) {
+        this.weeks = weeks;
         this.context = context;
-        init();
     }
 
     @Override
     public int getCount() {
-        return moneyLogList.size();
+        return weeks.size();
     }
 
     @Override
@@ -45,28 +44,35 @@ public class CustomAdapter extends BaseAdapter{
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        return null;
+        ViewHolder  holder;
+        if(view == null){
+            view = LayoutInflater.from(context).inflate(R.layout.custom_item_report, viewGroup,false);
+            holder = new ViewHolder(view);
+            view.setTag(holder);
+        }else {
+            holder = (ViewHolder) view.getTag();
+        }
+        Adapter adapter = new Adapter(
+                view.getContext(),
+                weeks.get(i).getMoneyLogList()
+        );
+        Log.i("DATAS", String.valueOf(weeks.get(i).getMoneyLogList().size()));
+        holder.txtTuan.setText(weeks.get(i).getObj().getName());
+        holder.txtThang.setText(weeks.get(i).getObj().getDate().substring(0,weeks.get(i).getObj().getDate().length()-3));
+        holder.listView.setExpanded(true);
+        holder.listView.setAdapter(adapter);
+        return view;
     }
 
 
     private class ViewHolder{
-        private TextView txtDate, txtMonthYear,txtName,txtNote, txtType, txtAmount;
+        private ExpandableHeightListView listView;
+        private TextView txtTuan,txtThang;
 
         public ViewHolder(View view) {
-
+            listView = view.findViewById(R.id.lvItemsReport);
+            txtTuan = view.findViewById(R.id.txtTitleReportTuan);
+            txtThang = view.findViewById(R.id.txtTitleReportMonth);
         }
-    }
-
-    private void generateWeekList(){
-        weeks = new ArrayList<>();
-        for(int i = 0; i < 4;i++){
-            weeks.add(new Week(
-               i+1,
-               "Tuần: "+i+1
-            ));
-        }
-    }
-    private void init(){
-        generateWeekList();
     }
 }
