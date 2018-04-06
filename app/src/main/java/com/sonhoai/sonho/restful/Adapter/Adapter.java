@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sonhoai.sonho.restful.Models.MoneyLog;
@@ -55,20 +56,21 @@ public class Adapter extends BaseAdapter{
         holder.txtMonthYear.setText(moneyLogList.get(i).getDate().substring(0, moneyLogList.get(i).getDate().length() - 3));
         holder.txtName.setText(moneyLogList.get(i).getName());
         holder.txtNote.setText(moneyLogList.get(i).getNote());
-        holder.txtType.setText((moneyLogList.get(i).getType() == 0) ? "Thu" : "Chi");
+        holder.imgType.setImageResource((moneyLogList.get(i).getType() == 0) ? R.drawable.earning : R.drawable.credit_card);
         holder.txtAmount.setText(moneyLogList.get(i).getAmount()+"");
         return view;
     }
 
     private class ViewHolder{
-        private TextView txtDate, txtMonthYear,txtName,txtNote, txtType, txtAmount;
+        private TextView txtDate, txtMonthYear,txtName,txtNote, txtAmount;
+        private ImageView imgType;
 
         public ViewHolder(View view) {
             txtDate = view.findViewById(R.id.txtDate);
             txtMonthYear = view.findViewById(R.id.txtMonthYear);
             txtName = view.findViewById(R.id.txtName);
             txtNote = view.findViewById(R.id.txtNote);
-            txtType = view.findViewById(R.id.txtType);
+            imgType = view.findViewById(R.id.imgType);
             txtAmount = view.findViewById(R.id.txtAmount);
         }
     }

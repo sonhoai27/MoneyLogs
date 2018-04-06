@@ -1,43 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:padding="16dp"
     android:layout_height="fill_parent">
     <LinearLayout
+        android:background="@color/colorPrimaryDark"
+        android:padding="16dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
+            android:textColor="@android:color/white"
             android:layout_weight="1"
             android:textStyle="bold"
             android:textSize="18dp"
-            android:layout_marginBottom="16dp"
             android:id="@+id/txtTitleReportTuan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView" />
         <TextView
+            android:textColor="@android:color/white"
             android:layout_weight="1"
             android:textStyle="bold"
             android:textSize="18dp"
-            android:layout_marginBottom="16dp"
             android:id="@+id/txtTitleReportMonth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView" />
         <TextView
+            android:textColor="@color/colorRed"
             android:gravity="right"
             android:layout_weight="4"
             android:textStyle="bold"
             android:textSize="18dp"
-            android:layout_marginBottom="16dp"
             android:id="@+id/txtTitleReportPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextSSSSSView" />
+            android:text="" />
     </LinearLayout>
 
     <com.sonhoai.sonho.restful.ExpandableHeightListView
+        android:dividerHeight="1dp"
+        android:divider="#eee"
         android:fadingEdge="none"
         android:focusable="false"
         android:scrollbars="none"

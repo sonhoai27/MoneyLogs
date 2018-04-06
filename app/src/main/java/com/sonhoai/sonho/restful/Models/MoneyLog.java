@@ -7,12 +7,12 @@ package com.sonhoai.sonho.restful.Models;
 public class MoneyLog {
     private int id;
     private String name;
-    private float amount;
+    private int amount;
     private String note;
     private int type;
     private String date;
 
-    public MoneyLog(int id, String name, float amount, String note, int type, String date) {
+    public MoneyLog(int id, String name, int amount, String note, int type, String date) {
         this.id = id;
         this.name = name;
         this.amount = amount;
@@ -37,11 +37,11 @@ public class MoneyLog {
         this.name = name;
     }
 
-    public float getAmount() {
+    public int getAmount() {
         return amount;
     }
 
-    public void setAmount(float amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 

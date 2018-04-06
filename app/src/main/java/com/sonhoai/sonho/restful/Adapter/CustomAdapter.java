@@ -58,7 +58,11 @@ public class CustomAdapter extends BaseAdapter{
         );
         Log.i("DATAS", String.valueOf(weeks.get(i).getMoneyLogList().size()));
         holder.txtTuan.setText(weeks.get(i).getObj().getName());
-        holder.txtThang.setText(weeks.get(i).getObj().getDate().substring(0,weeks.get(i).getObj().getDate().length()-3));
+        if(weeks.get(i).getObj().getDate().length() > 0){
+            holder.txtThang.setText(weeks.get(i).getObj().getDate().substring(0,weeks.get(i).getObj().getDate().length()-3));
+        }else {
+            holder.txtThang.setText("");
+        }
         holder.listView.setExpanded(true);
         holder.listView.setAdapter(adapter);
         return view;

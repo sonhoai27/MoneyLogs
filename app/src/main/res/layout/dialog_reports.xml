@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
-        android:textColor="@android:color/white"
-        android:layout_marginBottom="8dp"
-        android:textSize="18dp"
+        android:textColor="@color/colorDark"
+        android:layout_marginBottom="16dp"
+        android:textSize="20dp"
         android:text="Chọn hình thức"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -46,33 +46,4 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </RadioGroup>
-    <LinearLayout
-        android:layout_marginTop="32dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/btnSave"
-            style="@style/Widget.AppCompat.Button.Small"
-            android:layout_width="20dp"
-            android:layout_height="40dp"
-            android:layout_marginRight="32dp"
-            android:layout_weight="1"
-            android:background="@color/colorPrimaryDark"
-            android:text="Lưu"
-            android:textAlignment="center"
-            android:textAllCaps="false"
-            android:textColor="@android:color/background_light" />
-
-        <Button
-            android:id="@+id/btnClose"
-            android:layout_width="20dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="32dp"
-            android:layout_weight="1"
-            android:background="@color/colorRed"
-            android:text="Thoát"
-            android:textAllCaps="false"
-            android:textColor="@android:color/background_light" />
-    </LinearLayout>
 </LinearLayout>

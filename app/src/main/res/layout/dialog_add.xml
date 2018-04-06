@@ -65,35 +65,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RadioGroup>
-    <LinearLayout
-        android:layout_marginTop="32dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <!--<LinearLayout-->
+        <!--android:layout_marginTop="32dp"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
 
-        <Button
-            android:id="@+id/btnSave"
-            style="@style/Widget.AppCompat.Button.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="32dp"
-            android:layout_weight="1"
-            android:background="@color/colorPrimaryDark"
-            android:text="Lưu"
-            android:textAlignment="center"
-            android:textAllCaps="false"
-            android:textColor="@android:color/background_light" />
+        <!--<Button-->
+            <!--android:id="@+id/btnSave"-->
+            <!--style="@style/Widget.AppCompat.Button.Small"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginRight="32dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:background="@color/colorPrimaryDark"-->
+            <!--android:text="Lưu"-->
+            <!--android:textAlignment="center"-->
+            <!--android:textAllCaps="false"-->
+            <!--android:textColor="@android:color/background_light" />-->
 
-        <Button
-            android:id="@+id/btnClose"
-            style="@style/Widget.AppCompat.Button.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="32dp"
-            android:layout_weight="1"
-            android:background="@color/colorRed"
-            android:text="Thoát"
-            android:textAllCaps="false"
-            android:textColor="@android:color/background_light" />
-    </LinearLayout>
+        <!--<Button-->
+            <!--android:id="@+id/btnClose"-->
+            <!--style="@style/Widget.AppCompat.Button.Small"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="32dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:background="@color/colorRed"-->
+            <!--android:text="Thoát"-->
+            <!--android:textAllCaps="false"-->
+            <!--android:textColor="@android:color/background_light" />-->
+    <!--</LinearLayout>-->
 </LinearLayout>

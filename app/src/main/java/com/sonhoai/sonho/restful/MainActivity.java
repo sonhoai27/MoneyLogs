@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,13 +46,14 @@ public class MainActivity extends AppCompatActivity {
     private Adapter adapter;
     private FloatingActionButton fbAddMoneyLog;
     private TextView txtNothings;
+    private String BASEURL = "http://192.168.43.127:9000/api/MoneyLogs/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
         registerForContextMenu(lvMoneyLogs);
-        new DoGets().execute("http://192.168.1.129:9000/api/MoneyLogs");
+        new DoGets().execute(BASEURL);
     }
 
     @Override
@@ -90,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         fbAddMoneyLog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(MainActivity.this, R.style.myDialog));
                 LayoutInflater inflater = getLayoutInflater();
                 final View view1 = inflater.inflate(R.layout.dialog_add, null);
                 builder.setView(view1);
@@ -99,22 +101,19 @@ public class MainActivity extends AppCompatActivity {
                 final EditText edtContent, edtAmount,edtNote;
                 final RadioGroup group;
                 final RadioButton[] radioType = new RadioButton[1];
-                Button btnSave,btnClose;
 
-                btnSave = view1.findViewById(R.id.btnSave);
-                btnClose = view1.findViewById(R.id.btnClose);
                 edtContent = view1.findViewById(R.id.edtContent);
                 edtAmount = view1.findViewById(R.id.edtAmount);
                 edtNote = view1.findViewById(R.id.edtNote);
                 group = view1.findViewById(R.id.radioType);
-                final AlertDialog dialog = builder.show();
-                btnSave.setOnClickListener(new View.OnClickListener() {
+
+                builder.setPositiveButton("Lưu", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
+                    public void onClick(DialogInterface dialogInterface, int i) {
                         int checked = group.getCheckedRadioButtonId();
                         radioType[0] = view1.findViewById(checked);
                         new DoPost().execute(
-                                "http://192.168.1.129:9000/api/MoneyLogs",
+                                BASEURL,
                                 edtContent.getText().toString(),
                                 edtAmount.getText().toString(),
                                 edtNote.getText().toString(),
@@ -122,12 +121,14 @@ public class MainActivity extends AppCompatActivity {
                         );
                     }
                 });
-                btnClose.setOnClickListener(new View.OnClickListener() {
+                builder.setNegativeButton("Thoát", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        dialog.cancel();
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();;
                     }
                 });
+
+                builder.show();
             }
         });
     }
@@ -300,10 +301,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void delete(final int currentId){
-        new doDelete().execute("http://192.168.1.129:9000/api/MoneyLogs/"+currentId);
+        new doDelete().execute(BASEURL+currentId);
     }
     private void edit(final int currentId,final int idRow){
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(MainActivity.this, R.style.myDialog));
         LayoutInflater inflater = getLayoutInflater();
         final View view1 = inflater.inflate(R.layout.dialog_add, null);
         builder.setView(view1);
@@ -314,13 +315,9 @@ public class MainActivity extends AppCompatActivity {
         final RadioButton[] radioType = new RadioButton[1];
         final RadioButton radioB1;
         final RadioButton radioB2;
-        Button btnSave,btnClose;
 
         radioB1 = view1.findViewById(R.id.radioThu);
         radioB2 = view1.findViewById(R.id.radioChi);
-
-        btnSave = view1.findViewById(R.id.btnSave);
-        btnClose = view1.findViewById(R.id.btnClose);
 
         edtContent = view1.findViewById(R.id.edtContent);
         edtContent.setText(moneyLogList.get(idRow).getName()+"");
@@ -331,7 +328,6 @@ public class MainActivity extends AppCompatActivity {
         edtNote.setText(moneyLogList.get(idRow).getNote());
 
         group = view1.findViewById(R.id.radioType);
-        final AlertDialog dialog = builder.show();
 
         if(moneyLogList.get(idRow).getType() == 0){
             radioB1.setChecked(true);
@@ -340,9 +336,9 @@ public class MainActivity extends AppCompatActivity {
             radioB2.setChecked(true);
             radioB1.setChecked(false);
         }
-        btnSave.setOnClickListener(new View.OnClickListener() {
+        builder.setPositiveButton("Lưu", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(DialogInterface dialogInterface, int i) {
                 JSONObject jsonObject = new JSONObject();
                 try {
                     int checked = group.getCheckedRadioButtonId();
@@ -354,18 +350,20 @@ public class MainActivity extends AppCompatActivity {
                     jsonObject.put("Type", radioType[0].getTag().toString());
                     jsonObject.put("Date", moneyLogList.get(idRow).getDate().toString());
                     String obj = jsonObject.toString();
-                    new doUpdate().execute("http://192.168.1.129:9000/api/MoneyLogs/"+currentId, obj);
+                    new doUpdate().execute(BASEURL+currentId, obj);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
-        btnClose.setOnClickListener(new View.OnClickListener() {
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                dialog.cancel();
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
             }
         });
+
+        builder.show();
     }
 
     private class doDelete extends AsyncTask<String,Void,Integer>{
@@ -405,7 +403,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
-            final AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+            final AlertDialog.Builder dialog = new AlertDialog.Builder(new ContextThemeWrapper(MainActivity.this, R.style.myDialog));
             Log.i("CODES", String.valueOf(integer));
             if(integer == 200){
                 dialog.setTitle("Thành công!");
@@ -414,7 +412,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         moneyLogList.clear();
-                        new DoGets().execute("http://192.168.1.129:9000/api/MoneyLogs");
+                        new DoGets().execute(BASEURL);
                         dialogInterface.dismiss();
                     }
                 });
@@ -483,7 +481,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
-            final AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+            final AlertDialog.Builder dialog = new AlertDialog.Builder(new ContextThemeWrapper(MainActivity.this, R.style.myDialog));
             Log.i("CODES", String.valueOf(integer));
             if(integer == 200){
                 dialog.setTitle("Thành công!");
@@ -492,7 +490,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         moneyLogList.clear();
-                        new DoGets().execute("http://192.168.1.129:9000/api/MoneyLogs");
+                        new DoGets().execute(BASEURL);
                         dialogInterface.dismiss();
                     }
                 });
@@ -520,24 +518,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private  void showReportDialog(final int filter){
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(MainActivity.this, R.style.myDialog));
         final LayoutInflater inflater = getLayoutInflater();
         final View view1 = inflater.inflate(R.layout.dialog_reports, null);
         builder.setView(view1);
-        builder.setCancelable(false);
 
         final RadioGroup group;
         final RadioButton[] radioType = new RadioButton[1];
-        Button btnSave,btnClose;
-
-        btnSave = view1.findViewById(R.id.btnSave);
-        btnClose = view1.findViewById(R.id.btnClose);
         group = view1.findViewById(R.id.radioFilter);
-
-        final AlertDialog dialog = builder.show();
-        btnSave.setOnClickListener(new View.OnClickListener() {
+        builder.setPositiveButton("Xem thống kê", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(DialogInterface dialogInterface, int i) {
                 int checked = group.getCheckedRadioButtonId();
                 radioType[0] = view1.findViewById(checked);
                 Intent showReport = new Intent(MainActivity.this, ReportActivity.class);
@@ -546,11 +537,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(showReport);
             }
         });
-        btnClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.cancel();
-            }
-        });
+        builder.show();
     }
 }

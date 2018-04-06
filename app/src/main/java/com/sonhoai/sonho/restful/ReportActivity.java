@@ -27,6 +27,7 @@ public class ReportActivity extends AppCompatActivity {
     private ListView lvReport;
     private List<Weeks> weeks = new ArrayList<>();
     private CustomAdapter customAdapter;
+    private String BASEURL = "http://192.168.43.127:9000/api/MoneyLogs/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,13 +53,13 @@ public class ReportActivity extends AppCompatActivity {
         sort = bundle.getString("SORT");
         Log.i("SORT", sort);
         if(sort.equals("0")){
-            new doGets().execute("http://192.168.1.129:9000/api/MoneyLogs/Week?type="+filter);
+            new doGets().execute(BASEURL+"Week?type="+filter);
         }else if(sort.equals("1")){
-            new doGets().execute("http://192.168.1.129:9000/api/MoneyLogs/Quart?type="+filter);
+            new doGets().execute(BASEURL+"Quart?type="+filter);
         }else if(sort.equals("2")){
-            new doGets().execute("http://192.168.1.129:9000/api/MoneyLogs/Month?type="+filter);
+            new doGets().execute(BASEURL+"Month?type="+filter);
         }else if(sort.equals("3")){
-            new doGets().execute("http://192.168.1.129:9000/api/MoneyLogs/Year?type="+filter);
+            new doGets().execute(BASEURL+"Year?type="+filter);
         }
     }
 

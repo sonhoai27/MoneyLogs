@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ff303030"
     tools:context="com.sonhoai.sonho.restful.MainActivity"
     android:orientation="vertical">
     <LinearLayout
+        android:id="@+id/contentLv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -21,8 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <ListView
-            android:divider="#fff"
-            android:dividerHeight="0dp"
+            android:dividerHeight="1dp"
+            android:divider="#eee"
             android:id="@+id/lvMoneyLogs"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
@@ -33,5 +33,7 @@
         android:layout_margin="32dp"
         android:layout_gravity="bottom|right"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/contentLv"
+        app:layout_anchorGravity="bottom|right|end"/>
 </android.support.design.widget.CoordinatorLayout>

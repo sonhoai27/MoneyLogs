@@ -5,12 +5,10 @@
     android:layout_height="wrap_content">
     <LinearLayout
         android:elevation="2dp"
-        android:background="@drawable/bg_light"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:padding="8dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -21,7 +19,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorDark"
                 android:id="@+id/txtDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -30,7 +28,7 @@
                 android:textSize="32dp" />
 
             <TextView
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorDark"
                 android:id="@+id/txtMonthYear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -49,27 +47,19 @@
                 android:textSize="18dp" />
         </LinearLayout>
         <LinearLayout
-            android:layout_marginTop="8dp"
-            android:background="@android:color/darker_gray"
-            android:layout_width="match_parent"
-            android:layout_height="1px"/>
-
-        <LinearLayout
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingBottom="16dp"
-            android:paddingTop="16dp">
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp">
 
-            <TextView
-                android:textColor="@android:color/white"
-                android:id="@+id/txtType"
+            <ImageView
+                android:layout_marginRight="16dp"
+                android:id="@+id/imgType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"
-                android:text="Loại"
-                android:textSize="16dp" />
+                android:layout_weight="3" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -89,7 +79,7 @@
                     android:textSize="18dp" />
                 <TextView
                     android:layout_marginTop="8dp"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/colorDark"
                     android:id="@+id/txtNote"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
